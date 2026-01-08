@@ -19,6 +19,20 @@ data-cleansing-portfolio/
 - cleaned データは正規化済みの理想形として出力します
 - 不正・欠損データは削除せず、フラグで管理します
 
+
+
+## Overview
+
+This project is a sample implementation of CSV data cleansing using Python.
+It focuses on safe data handling, logging, and testable rule-based cleansing.
+
+
+## Usage
+
+```bash
+python scripts/cleanse.py sample_data/raw/orders_raw.csv
+
+
 ## Test
 
 This project uses pytest.
@@ -26,3 +40,4 @@ This project uses pytest.
 ```bash
 cd data-cleansing-portfolio
 pytest
+```
