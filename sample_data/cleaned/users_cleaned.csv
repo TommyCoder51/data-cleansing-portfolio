@@ -1,0 +1,11 @@
+id,name,email,age,gender,joined_date,notes,error_flag
+1,山田太郎,yamada@example.com,35,male,2023-04-01,,0
+2,佐藤花子,sato@example.com,,female,2023-04-02,年齢未入力,1
+3,鈴木一郎,suzuki@example.com,42,male,2023-04-03,,0
+4,高橋三郎,takahashi@example.com,28,male,2023-04-04,,0
+5,伊藤四郎,ito@example.com,,male,2023-04-05,年齢不正,1
+6,加藤五郎,kato@example.com,50,unknown,2023-04-06,性別欠損,1
+7,田中次郎,tanaka@example.com,45,male,2023-04-07,備考に改行が入っている,1
+8,,nakamura@example.com,33,female,2023-04-08,名前欠損,1
+9,松本六郎,matsumoto@example.com,40,female,2023-04-09,,0
+10,山本七郎,yamamoto@example.com,41,male,2023-04-10,OK,0

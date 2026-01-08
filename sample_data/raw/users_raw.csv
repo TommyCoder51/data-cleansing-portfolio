@@ -1,0 +1,12 @@
+id,name,email,age,gender,joined_date,notes
+1,山田太郎,yamada@example.com,35,男,2023/4/1,
+2,佐藤花子,sato@example.com, ,女,2023-04-02,年齢未入力
+3,鈴木一郎,suzuki@example.com,42,M,2023年4月3日,
+4,高橋三郎,takahashi@example.com,２８,男性,2023/04/04,
+5,伊藤四郎,ito@example.com,abc,男,2023/4/05,年齢不正
+6,加藤五郎,kato@example.com,50,,2023/04/06,性別欠損
+7,田中次郎,tanaka@example.com,45,男,2023/04/07,"備考に
+改行が入っている"
+8,,nakamura@example.com,33,女,2023/04/08,名前欠損
+9,松本六郎,matsumoto@example.com,40,女,2023/4/9, 
+10,山本七郎,yamamoto@example.com,41,男性,2023-4-10,OK
