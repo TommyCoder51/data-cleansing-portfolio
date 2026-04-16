@@ -192,6 +192,7 @@ def main():
 
     logger.info(f"Output written: {input_filename}")
     logger.info("Process completed")
+    print("クレンジング処理が完了しました。")
 
 
 if __name__ == "__main__":

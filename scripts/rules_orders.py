@@ -101,8 +101,9 @@ def _try_parse_date(value: str):
                 except ValueError:
                     pass
 
-    # -------- 和暦（昭和・平成・令和）+ 年月日（漢字） --------
-    m = re.fullmatch(r"(昭和|平成|令和)(\d{1,2})年(\d{1,2})月(\d{1,2})日?", value)
+# -------- 和暦（昭和・平成・令和）+ 年月日（漢字） --------
+    m = re.fullmatch(
+        rf"({WAREKI_SHOWA}|{WAREKI_HEISEI}|{WAREKI_REIWA})(\d{{1,2}})年(\d{{1,2}})月(\d{{1,2}})日?", value)
     if m:
         gengou = m.group(1)
         base = WAREKI[gengou]
@@ -160,6 +161,7 @@ def cleanse_order_row(row: dict) -> tuple[dict, list]:
             cleaned_row["order_date"] = dt.strftime("%Y-%m-%d")
         else:
             error_flag = 1
+            print(f"")
             warnings.append({
                 "column": "order_date",
                 "reason": "invalid_format"
@@ -178,7 +180,8 @@ def cleanse_order_row(row: dict) -> tuple[dict, list]:
         })
     else:
         try:
-            cleaned_row["amount"] = int(amount)
+            cleaned_row["amount"] = int(amount.replace(",", "").replace(
+                "，", "").replace("¥", "").replace("￥", ""))
         except Exception:
             error_flag = 1
             warnings.append({
