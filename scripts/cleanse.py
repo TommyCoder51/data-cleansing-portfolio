@@ -111,6 +111,7 @@ def main():
     # ========================================================
     if not os.path.isfile(input_path):
         logger.error(f"Input file not found")
+        print("入力ファイルが存在しません。")
         sys.exit(1)
 
     input_filename = os.path.basename(input_path)
@@ -129,16 +130,19 @@ def main():
             rows = list(reader)
     except Exception:
         logger.error("CSV parse failed")
+        print("CSVの読み込みに失敗しました。")
         sys.exit(1)
 
     # ヘッダチェック
     if not fieldnames:
         logger.error("CSV header missing")
+        print("CSVのヘッダが見つかりません。")
         sys.exit(1)
 
     # データ行チェック
     if len(rows) == 0:
         logger.error("CSV has no data rows")
+        print("CSVにデータ行がありません。")
         sys.exit(1)
 
     logger.info(f"Input loaded: rows={len(rows)}")
@@ -188,6 +192,7 @@ def main():
             writer.writerows(cleaned_rows)
     except Exception:
         logger.error("Failed to write cleaned CSV")
+        print("クレンジング結果の書き込みに失敗しました。")
         sys.exit(1)
 
     logger.info(f"Output written: {input_filename}")
