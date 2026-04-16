@@ -15,6 +15,10 @@
 
 import re
 from datetime import datetime
+WAREKI_SHOWA = "昭和"
+WAREKI_HEISEI = "平成"
+WAREKI_REIWA = "令和"
+WAREKI = {WAREKI_SHOWA: 1925, WAREKI_HEISEI: 1988, WAREKI_REIWA: 2018}
 
 
 # ============================================================
@@ -32,6 +36,8 @@ def _try_parse_date(value: str):
     ・2024年1月7日           （年月日）
     ・20240108               （区切りなし8桁）
     ・14年1月7日 / 14/1/7 / 14-1-7  （2桁年>=10 → 2000年代）
+    ・1年1月7日 / 1/1/7 / 1-1-7     （1桁年<=9 → 令和）
+    ・昭和63年1月7日 / 平成6年1月7日 / 令和6年1月7日  （和暦）
     """
 
     # 全角スラッシュ → 半角スラッシュ
@@ -61,8 +67,8 @@ def _try_parse_date(value: str):
         except ValueError:
             pass
 
-    # -------- 2桁年（>=10） + スラッシュ or ハイフン --------
-    m = re.fullmatch(r"(\d{2})[/\-](\d{1,2})[/\-](\d{1,2})", value)
+    # -------- 2桁年（>=10） or 1-2桁年（<=9 → 令和） + スラッシュ or ハイフン --------
+    m = re.fullmatch(r"(\d{1,2})[/\-](\d{1,2})[/\-](\d{1,2})", value)
     if m:
         yy = int(m.group(1))
         if yy >= 10:
@@ -70,14 +76,42 @@ def _try_parse_date(value: str):
                 return datetime(2000 + yy, int(m.group(2)), int(m.group(3)))
             except ValueError:
                 pass
+        elif yy <= 9:
+            seireki = 2018 + yy
+            if seireki <= datetime.now().year:
+                try:
+                    return datetime(seireki, int(m.group(2)), int(m.group(3)))
+                except ValueError:
+                    pass
 
-    # -------- 2桁年（>=10） + 年月日（漢字） --------
-    m = re.fullmatch(r"(\d{2})年(\d{1,2})月(\d{1,2})日?", value)
+    # -------- 2桁年（>=10） or 1-2桁年（<=9 → 令和） + 年月日（漢字） --------
+    m = re.fullmatch(r"(\d{1,2})年(\d{1,2})月(\d{1,2})日?", value)
     if m:
         yy = int(m.group(1))
         if yy >= 10:
             try:
                 return datetime(2000 + yy, int(m.group(2)), int(m.group(3)))
+            except ValueError:
+                pass
+        elif yy <= 9:
+            seireki = 2018 + yy
+            if seireki <= datetime.now().year:
+                try:
+                    return datetime(seireki, int(m.group(2)), int(m.group(3)))
+                except ValueError:
+                    pass
+
+    # -------- 和暦（昭和・平成・令和）+ 年月日（漢字） --------
+    m = re.fullmatch(r"(昭和|平成|令和)(\d{1,2})年(\d{1,2})月(\d{1,2})日?", value)
+    if m:
+        gengou = m.group(1)
+        base = WAREKI[gengou]
+        seireki = base + int(m.group(2))
+        if gengou == WAREKI_REIWA and seireki > datetime.now().year:
+            pass
+        else:
+            try:
+                return datetime(seireki, int(m.group(3)), int(m.group(4)))
             except ValueError:
                 pass
 
